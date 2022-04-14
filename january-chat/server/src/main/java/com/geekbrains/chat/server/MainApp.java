@@ -21,6 +21,9 @@ public class MainApp {
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             while (true) {
                 String msg = in.readUTF();
+                if (msg.equals("/end")){
+                    System.exit(0);
+                }
                 System.out.print("Сообщение от клиента: " + msg + "\n");
                 out.writeUTF("echo: " + msg);
             }
