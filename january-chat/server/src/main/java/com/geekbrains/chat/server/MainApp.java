@@ -1,34 +1,19 @@
 package com.geekbrains.chat.server;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import com.sun.security.ntlm.NTLMException;
 
 public class MainApp {
     // Домашнее задание:
     // 1. Разобраться с кодом. Задать вопросы что непонятно;
-    // 2. Если клиент посылает сообщение '/end', то сервер должен закрыть соединение
-    // и завершить работу, а клиент должен закрыть соединение с сервером со своей стороны.
+    // 2. Попробуйте реализовать личные сообщения
+    // если я с user1 пишу '/w user2 hello',
+    // то сообщение hello должен получить только user2, или user1 должен получить
+    // ответ что user2 не в сети
+    // 3. Попробуйте сделать в чате оповещения о заходящих и выходящий пользователях
+    // Если будет сложно с кодом: возможно выполнение только задания 1. Или можно выбрать
+    // п.2 или п.3
 
     public static void main(String[] args) {
-        try (ServerSocket serverSocket = new ServerSocket(8189)) {
-            System.out.println("Сервер запущен. Ожидаем подключения клиентов...");
-            Socket socket = serverSocket.accept();
-            System.out.println("Клиент подключился");
-            DataInputStream in = new DataInputStream(socket.getInputStream());
-            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-            while (true) {
-                String msg = in.readUTF();
-                if (msg.equals("/end")){
-                    System.exit(0);
-                }
-                System.out.print("Сообщение от клиента: " + msg + "\n");
-                out.writeUTF("echo: " + msg);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        new Server(8189);
     }
 }
