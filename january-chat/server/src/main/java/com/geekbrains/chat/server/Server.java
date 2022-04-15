@@ -68,6 +68,7 @@ public class Server {
         sender.sendMsg(receiverNickname + " не в сети");
     }
 
+
     public boolean isNickBusy(String nickname) {
         for (ClientHandler o : clients) {
             if (o.getNickname().equals(nickname)) {
@@ -76,6 +77,8 @@ public class Server {
         }
         return false;
     }
+
+
 
     public synchronized void subscribe(ClientHandler clientHandler) {
         broadcastMsg(clientHandler.getNickname() + " зашел в чат", false);
