@@ -51,21 +51,25 @@ public class Server {
     }
 
     public void broadcastMsg(String msg, boolean withDateTime) {
-        try {
-        String name = "";
-        if (withDateTime) {
-            msg = String.format("[%s] %s", LocalDateTime.now().format(DTF), msg);
-        }
+            String name = "";
+            if (withDateTime) {
+                msg = String.format("[%s] %s", LocalDateTime.now().format(DTF), msg);
+            }
             for (ClientHandler o : clients) {
                 o.sendMsg(msg);
                 name = o.getNickname();
             }
-            fis = new FileOutputStream( name + " log" , true);
+            log(name, msg);
+    }
+
+    public void log(String name, String msg) {
+        try {
+            fis = new FileOutputStream(name + " log", true);
             out = new DataOutputStream(fis);
             out.writeUTF(name + " " + msg + "\n");
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 fis.close();
                 out.close();
