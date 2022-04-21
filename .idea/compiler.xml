@@ -8,10 +8,12 @@
         <outputRelativeToContentRoot value="true" />
         <module name="client" />
         <module name="server" />
+        <module name="Commom" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="client" target="1.8" />
+      <module name="Commom" target="8" />
       <module name="january-chat" target="1.8" />
       <module name="server" target="1.8" />
     </bytecodeTargetLevel>

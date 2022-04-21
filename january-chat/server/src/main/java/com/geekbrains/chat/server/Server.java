@@ -63,20 +63,20 @@ public class Server {
     }
 
     public void broadcastMsg(String msg, boolean withDateTime) {
-            int count = 0;
-            String name = "";
-            if (withDateTime) {
-                msg = String.format("[%s] %s", LocalDateTime.now().format(DTF), msg);
+        int count = 0;
+        String name = "";
+        if (withDateTime) {
+            msg = String.format("[%s] %s", LocalDateTime.now().format(DTF), msg);
+        }
+        for (ClientHandler o : clients) {
+            o.sendMsg(msg);
+            name = o.getNickname();
+            if (lastStrings.size() <= 100) {
+                lastStrings.add(msg);
+                count++;
             }
-            for (ClientHandler o : clients) {
-                o.sendMsg(msg);
-                name = o.getNickname();
-                if (lastStrings.size() <= 100) {
-                    lastStrings.add(msg);
-                    count++;
-                }
-            }
-            log(name, msg);
+        }
+        log(name, msg);
     }
 
     public void log(String name, String msg) {
