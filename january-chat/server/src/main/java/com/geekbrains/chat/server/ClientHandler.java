@@ -1,9 +1,8 @@
 package com.geekbrains.chat.server;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 public class ClientHandler {
     private Server server;
@@ -21,11 +20,14 @@ public class ClientHandler {
         this.socket = socket;
         this.in = new DataInputStream(socket.getInputStream());
         this.out = new DataOutputStream(socket.getOutputStream());
+
+
         new Thread(() -> {
             try {
                 while (true) { // цикл аутентификации
                     String msg = in.readUTF();
                     System.out.print("Сообщение от клиента: " + msg + "\n");
+
                     if (msg.startsWith("/auth ")) { // /auth login1 pass1
                         String[] tokens = msg.split(" ", 3);
                         String nickFromAuthManager = server.getAuthManager().getNicknameByLoginAndPassword(tokens[1], tokens[2]);
@@ -57,12 +59,9 @@ public class ClientHandler {
                             sendMsg("/end_confirm");
                             break;
                         }
-                        if (msg.startsWith("/change_nick ")){
-                            String[] tokens = msg.split(" ", 2);
-                            nickname = tokens[1];
-                        }
                     } else {
                         server.broadcastMsg(nickname + ": " + msg, true);
+
                     }
                 }
             } catch (IOException e) {

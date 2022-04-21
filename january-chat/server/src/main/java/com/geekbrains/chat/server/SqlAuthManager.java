@@ -18,8 +18,8 @@ public class SqlAuthManager implements AuthManager{
                     return null;
                 }
                 result= rs.getString(1);
-        }
-    }catch  (SQLException e) {
+            }
+        }catch  (SQLException e) {
             e.printStackTrace();
         }
 
@@ -42,19 +42,17 @@ public class SqlAuthManager implements AuthManager{
     @Override
     public void disconnect() {
         try {
-            connection.close();
-            ps.close();
+            if (connection != null) {
+                connection.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
 
-    @Override
-    public boolean changeNickName(String newNick, String login, String password) {
-        if (msg.startsWith("/change_nick ")){
-            String[] tokens = msg.split(" ", 2);
-            nickname = tokens[1];
-        }
-    }
+
 }
