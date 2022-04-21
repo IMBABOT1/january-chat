@@ -1,5 +1,10 @@
 package com.geekbrains.chat.server;
 
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -21,7 +26,12 @@ public class Server {
         return authManager;
     }
 
+
     private ClientHandler clientHandler;
+
+    public ClientHandler getClientHandler(){
+        return clientHandler;
+    }
 
     public AuthManager authManager(){
         return authManager;
@@ -29,11 +39,13 @@ public class Server {
 
     private FileOutputStream fis;
     private DataOutputStream out;
+    private List<String> lastStrings;
 
     public Server(int port) {
         clients = new ArrayList<>();
         authManager = new SqlAuthManager();
         authManager.connect();
+        lastStrings = new ArrayList<>();
 
 
 
@@ -51,6 +63,7 @@ public class Server {
     }
 
     public void broadcastMsg(String msg, boolean withDateTime) {
+            int count = 0;
             String name = "";
             if (withDateTime) {
                 msg = String.format("[%s] %s", LocalDateTime.now().format(DTF), msg);
@@ -58,6 +71,10 @@ public class Server {
             for (ClientHandler o : clients) {
                 o.sendMsg(msg);
                 name = o.getNickname();
+                if (lastStrings.size() <= 100) {
+                    lastStrings.add(msg);
+                    count++;
+                }
             }
             log(name, msg);
     }
@@ -119,6 +136,17 @@ public class Server {
     public synchronized void subscribe(ClientHandler clientHandler) {
         broadcastMsg(clientHandler.getNickname() + " зашел в чат", false);
         clients.add(clientHandler);
+        com.sun.javafx.application.PlatformImpl.startup(new Runnable() {
+            @Override
+            public void run() {
+                if (lastStrings.size() > 0) {
+                    for (String o : lastStrings) {
+                        clientHandler.sendMsg(o);
+                    }
+                }
+            }
+        });
+
         broadcastClientsList();
     }
 
