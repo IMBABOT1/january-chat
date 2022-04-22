@@ -74,6 +74,10 @@ public class Server {
             if (lastStrings.size() <= 100) {
                 lastStrings.add(msg);
                 count++;
+
+                if (lastStrings.size() == 100){
+                    lastStrings.clear();
+                }
             }
         }
         log(name, msg);

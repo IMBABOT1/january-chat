@@ -6,16 +6,17 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="client" />
         <module name="server" />
-        <module name="Commom" />
+        <module name="client" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="client" target="1.8" />
       <module name="Commom" target="8" />
+      <module name="Common" target="8" />
       <module name="january-chat" target="1.8" />
       <module name="server" target="1.8" />
+      <module name="Temp" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>

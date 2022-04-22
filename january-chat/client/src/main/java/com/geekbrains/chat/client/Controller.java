@@ -11,6 +11,8 @@ import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -32,6 +34,7 @@ public class Controller implements Initializable {
     private Network network;
     private boolean authenticated;
     private String nickname;
+
 
     public void setAuthenticated(boolean authenticated) {
         this.authenticated = authenticated;
